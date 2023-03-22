@@ -6,6 +6,8 @@ import {storageAuthTokenSave, storageAuthTokenGet, storageAuthTokenRemove } from
 import { api } from "@services/api";
 import { UserDTO } from "@dtos/UserDTO";
 
+import {tagCartUpdate} from '../notifications/notificationsTags';
+
 export type AuthContextDataProps = {
   user: UserDTO;
   singIn: (email: string, password: string) => void;
@@ -32,6 +34,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const updateUserProfile = async (userUpdated: UserDTO) => {
     try {
       setUser(userUpdated);
+      tagCartUpdate(userUpdated.name.toString());
       await storageUserSave(userUpdated);
     } catch (error) {
       throw error;
